@@ -7,6 +7,7 @@ angular
         $scope.total = {};
         function fetch() {
             $scope.fetch.status = 0;
+            console.log('Henter data..')
             $http
                 .get('data.json')
                 .then(function(res) {
@@ -21,6 +22,7 @@ angular
                     $scope.error = res.data.error;
                     if ($scope.error) {
                         $scope.fetch.status = -1;
+                        console.log(res.data.error);
                     }
                 /* test data 
                 $scope.counties[3].counts.votes = 32400;

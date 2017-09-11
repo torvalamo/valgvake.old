@@ -41,8 +41,7 @@ const data = exports.data = {
 };
 
 process.on('uncaughtException', (e) => {
-    data.error = e;
-    console.log(e);
+    data.error = e.message;
 });
 
 exports.request = function getNational(repeat, delay) {
@@ -139,7 +138,7 @@ function getPath(path, cb) {
             try {
                 cb(JSON.parse(raw));
             } catch(e) {
-                throw e;
+                data.error = e.message;
             }
         });
         msg.on('close', () => {
