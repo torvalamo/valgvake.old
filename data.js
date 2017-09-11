@@ -66,9 +66,11 @@ exports.request = function getNational(repeat, delay) {
         var votes = obj.partier.reduce((sum, p) => {
             if (p.id.partikode == 'BLANKE') return sum;
             return sum + p.stemmer.resultat.antall.total;
-        }, 0) || 1;
+        }, 0);
         
-        data.total.counts.percentage = p.stemmer.resultat.antall.total / votes;
+        data.total.counts.percentage = (p.stemmer.resultat.antall.total / votes) * 100;
+        
+        console.log('TOTAL', votes, p.stemmer.resultat.antall.total, data.total.counts.percentage);
         
         // Check counties for updates
         data.counties.forEach((c, i) => {
@@ -115,9 +117,11 @@ function getCounty(nr) {
         var votes = obj.partier.reduce((sum, p) => {
             if (p.id.partikode == 'BLANKE') return sum;
             return sum + p.stemmer.resultat.antall.total;
-        }, 0) || 1;
+        }, 0);
         
-        c.counts.percentage = p.stemmer.resultat.antall.total / votes;
+        c.counts.percentage = (p.stemmer.resultat.antall.total / votes) * 100;
+        
+        console.log(c.name, votes, p.stemmer.resultat.antall.total, c.counts.percentage);
     });
 }
 
