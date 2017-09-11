@@ -15,7 +15,6 @@ angular
                     $scope.total = res.data.total;
                     $scope.counties = res.data.counties;
                     $scope.municipal = res.data.municipal;
-                console.log($scope.municipal);
                     var d = new Date();
                     d.setTime(Date.parse(res.data.fetch));
                     $scope.fetch = {
