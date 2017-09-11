@@ -6,12 +6,10 @@ angular
         $scope.counties = [];
         $scope.total = {};
         function fetch() {
-            console.log('Fetching data.json...');
             $scope.fetch.status = 0;
             $http
                 .get('data.json')
                 .then(function(res) {
-                    console.log('Data received: ', res.data);
                     $scope.total = res.data.total;
                     $scope.counties = res.data.counties;
                     var d = new Date();
@@ -24,9 +22,10 @@ angular
                     if ($scope.error) {
                         $scope.fetch.status = -1;
                     }
-                /* test data
-                $scope.counties[3].votes = 32400;
-                $scope.counties[3].percentage = 43.124;
+                /* test data 
+                $scope.counties[3].counts.votes = 32400;
+                $scope.counties[3].counts.percentage = 43.124;
+                $scope.counties[4].counted.votes = 123;
                 $scope.total.counts = {
                     votes: 32400,
                     earlyVotes: 1829
@@ -56,7 +55,6 @@ angular
         }
         $scope.getTopCounty = getTopCounty;
         function setTopCounty(code) {
-            console.log('setting top county', code)
             $scope.topCounty = code;
             cookie('topCounty', code);
         }
@@ -64,12 +62,35 @@ angular
         setTopCounty(cookie('topCounty'));
                                     
         function toggleContext() {
-            console.log('toggling context', $scope.context);
             $scope.context = !$scope.context;
-            cookie('context', $scope.context ? 1 : null)
-            console.log('new context', $scope.context, cookie('context'));
+            cookie('context', $scope.context ? 1 : null);
         }
         $scope.toggleContext = toggleContext;
         console.log('setting context', !!cookie('context'));
         $scope.context = !!cookie('context');
+                                    
+        function setOrderTerm(field, reverse, field2, reverse2) {
+            var _field;
+            if (field2) {
+                _field = [field, field2];
+                cookie('orderBy2', field2);
+            }
+            if (!field2) {
+                _field = field;
+                cookie('orderBy2', null);
+            }
+            
+            if ($scope.orderBy == field || (field2 && $scope.orderBy.length == 2)) {
+                $scope.orderReverse = !$scope.orderReverse;
+                cookie('orderReverse', $scope.orderReverse ? 1 : null);
+                return;
+            }
+            $scope.orderBy = _field;
+            $scope.orderReverse = !!reverse;
+            cookie('orderBy', field);
+            cookie('orderReverse', $scope.orderReverse ? 1 : null);
+        }
+        $scope.setOrderTerm = setOrderTerm;
+        $scope.orderBy = cookie('orderBy2') ? [cookie('orderBy'), cookie('orderBy2')] : cookie('orderBy') || 'name';
+        $scope.orderReverse = !!cookie('orderReverse');
     }]);
