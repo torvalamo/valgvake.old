@@ -6,7 +6,7 @@ app.use(express.static('client'));
 
 const data = require('./data.js');
 
-data.request(true);
+data.request(true, 300000);
 
 app.get('/data.json', (req, res) => {
     var muns = Object.keys(data.municipal).map(k => {return data.municipal[k]});

@@ -40,7 +40,7 @@ angular
                 */
                     $scope.mostVotes = getMostVotes();
             });
-            setTimeout(fetch, 60000);
+            setTimeout(fetch, 300000);
         };
         fetch();
                                     
