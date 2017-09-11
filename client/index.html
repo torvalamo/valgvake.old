@@ -270,7 +270,7 @@
             <div class="has-text-right" ng-switch on="fetch.status">
                 <span class="tag is-danger" ng-switch-when="-1">KATASTROFE (litt): {{ error }}</span>
                 <span class="tag is-warning" ng-switch-when="0">Sjekker om det er nye data ...</span>
-                <span class="tag is-success" ng-switch-default>Siste registrering {{ fetch.time | date : 'd. MMMM y kl. HH:mm:ss' }}</span>
+                <span class="tag is-success" ng-switch-default>Siste registrering {{ fetch.time | date : 'd. MMMM y kl. HH:mm' }}</span>
             </div>
         </div>
     </body>
