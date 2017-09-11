@@ -95,7 +95,8 @@
                              ng-click="toggleContext()">
                             <img src="logo.png" alt="" style="height: 100px;">
                         </div>
-                        <div class="level-item has-text-centered">
+                        <div class="level-item has-text-centered"
+                             ng-click="showMunicipals = !showMunicipals">
                             <div>
                                 <p class="heading">Oppslutning</p>
                                 <p class="title is-1 is-bold">{{ total.counts.percentage | number : 2 }} %</p>
@@ -112,7 +113,7 @@
             </div>
         </section>
         <div class="container is-fluid">
-            <table class="table is-striped" ng-hide="context">
+            <table class="table is-striped" ng-hide="context || showMunicipals">
                 <thead>
                     <tr>
                         <td width="5%" 
@@ -208,7 +209,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="tile is-ancestor" ng-show="context">
+            <div class="tile is-ancestor" ng-show="context && !showMunicipals">
                 <div class="tile is-vertical is-12">
                     <!-- selected top county -->
                     <div class="tile is-parent">
@@ -267,6 +268,52 @@
                     </div>
                 </div>
             </div>
+            <table class="table is-striped" ng-show="showMunicipals">
+                <thead>
+                    <tr>
+                        <td width="5%">#</td>
+                        <td>Fylke</td>
+                        <td>Kommune</td>
+                        <td width="15%" class="is-right" 
+                            ng-class="{'is-bold': orderBy == 'counts.votes'}" 
+                            ng-click="setOrderTerm('counts.votes', true)">
+                            <span class="icon" 
+                                  ng-show="orderBy == 'counts.votes'">
+                                <i class="fa" 
+                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
+                            </span> Stemmer
+                        </td>
+                        <td width="15%" class="is-right" 
+                            ng-class="{'is-bold': orderBy == 'counts.earlyVotes'}" 
+                            ng-click="setOrderTerm('counts.earlyVotes', true)">
+                            <span class="icon" 
+                                  ng-show="orderBy == 'counts.earlyVotes'">
+                                <i class="fa" 
+                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
+                            </span> Forh.stem.
+                        </td>
+                        <td width="15%" class="is-right" 
+                            ng-class="{'is-bold': orderBy == 'counts.percentage'}" 
+                            ng-click="setOrderTerm('counts.percentage', true)">
+                            <span class="icon" 
+                                  ng-show="orderBy == 'counts.percentage'">
+                                <i class="fa" 
+                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
+                            </span> Oppslutning
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="muni in municipal | orderBy : orderBy : orderReverse">
+                        <td>{{ muni.code }}</td>
+                        <td>{{ muni.county }}</td>
+                        <td>{{ muni.name }}</td>
+                        <td class="is-right">{{ muni.counts.votes | number}}</td>
+                        <td class="is-right">{{ muni.counts.earlyVotes | number}}</td>
+                        <td class="is-right">{{ muni.counts.percentage | number : 2 }} %</td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="has-text-right" ng-switch on="fetch.status">
                 <span class="tag is-danger" ng-switch-when="-1">KATASTROFE (litt): {{ error }}</span>
                 <span class="tag is-warning" ng-switch-when="0">Sjekker om det er nye data ...</span>

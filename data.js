@@ -39,6 +39,7 @@ const data = exports.data = {
         {code: '20', fetch: null},
     ]
 };
+const municipal = exports.municipal = {};
 
 process.on('uncaughtException', (e) => {
     data.error = e.message;
@@ -121,7 +122,34 @@ function getCounty(nr) {
         
         c.counts.percentage = (p.stemmer.resultat.antall.total / votes) * 100;
         
-        console.log(c.name, votes, p.stemmer.resultat.antall.total, c.counts.percentage);
+        obj._links.related.forEach((r) => {
+            getMunicipal(c.code, r.nr);
+        });
+    });
+}
+
+function getMunicipal(county, nr) {
+    getPath('/api/2017/st/' + county + '/' + nr, (obj) => {
+        var p = obj.partier.filter((p) => {
+            return p.id.partikode == PARTIKODE;
+        }).pop();
+        
+        // Own percentage calculation for more decimals
+        var votes = obj.partier.reduce((sum, p) => {
+            if (p.id.partikode == 'BLANKE') return sum;
+            return sum + p.stemmer.resultat.antall.total;
+        }, 0);
+        
+        municipal[nr] = {
+            county: obj._links.up.navn,
+            code: obj.id.nr,
+            name: obj.id.navn,
+            counts: {
+                votes: p.stemmer.resultat.antall.total,
+                earlyVotes: p.stemmer.resultat.antall.fhs,
+                percentage: (p.stemmer.resultat.antall.total / votes) * 100
+            }
+        };
     });
 }
 

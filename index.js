@@ -9,7 +9,8 @@ const data = require('./data.js');
 data.request(true);
 
 app.get('/data.json', (req, res) => {
-    res.json(data.data);
+    var muns = Object.keys(data.municipal).map(k => {return data.municipal[k]});
+    res.json(Object.assign({municipal: muns}, data.data));
 });
 
 app.listen(process.env.PORT || 8080);

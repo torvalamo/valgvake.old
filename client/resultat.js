@@ -4,6 +4,7 @@ angular
                                 function($scope, $http) {
         $scope.fetch = {};
         $scope.counties = [];
+        $scope.municipal = [];
         $scope.total = {};
         function fetch() {
             $scope.fetch.status = 0;
@@ -13,6 +14,8 @@ angular
                 .then(function(res) {
                     $scope.total = res.data.total;
                     $scope.counties = res.data.counties;
+                    $scope.municipal = res.data.municipal;
+                console.log($scope.municipal);
                     var d = new Date();
                     d.setTime(Date.parse(res.data.fetch));
                     $scope.fetch = {
@@ -95,4 +98,6 @@ angular
         $scope.setOrderTerm = setOrderTerm;
         $scope.orderBy = cookie('orderBy2') ? [cookie('orderBy'), cookie('orderBy2')] : cookie('orderBy') || 'name';
         $scope.orderReverse = !!cookie('orderReverse');
+                                    
+        $scope.showMunicipals = false;
     }]);
