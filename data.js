@@ -60,7 +60,7 @@ exports.request = function getNational(repeat, delay) {
         data.total.counts.votes = p.stemmer.resultat.antall.total;
         data.total.counts.earlyVotes = p.stemmer.resultat.antall.fhs;
         data.total.counts.percentage = p.stemmer.resultat.prosent || 0;
-        data.total.counts.mandates = p.mandater ? p.mandater.resultat.antall : 0;
+        data.total.counts.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
         
         // Own percentage calculation for more decimals
         var votes = obj.partier.reduce((sum, p) => {
@@ -109,7 +109,7 @@ function getCounty(nr) {
         c.counts.votes = p.stemmer.resultat.antall.total;
         c.counts.earlyVotes = p.stemmer.resultat.antall.fhs;
         c.counts.percentage = p.stemmer.resultat.prosent || 0;
-        c.counts.mandates = p.mandater ? p.mandater.resultat.antall : 0;
+        c.counts.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
         
         // Own percentage calculation for more decimals
         var votes = obj.partier.reduce((sum, p) => {
@@ -139,6 +139,7 @@ function getPath(path, cb) {
                 cb(JSON.parse(raw));
             } catch(e) {
                 data.error = e.message;
+                console.log(e);
             }
         });
         msg.on('close', () => {
