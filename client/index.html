@@ -191,7 +191,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="county in counties | orderBy : orderBy : orderReverse" 
-                        ng-class="{'is-selected': county.counts.mandates, 'is-one-pst': county.counts.percentage >= 1}">
+                        ng-class="{'is-selected': county.counts.mandates, 'is-one-pst': county.counts.votes >= 500}">
                         <td>{{ county.code }}</td>
                         <td>{{ county.name }}</td>
                         <td class="is-right">{{ county.counts.votes | number}}</td>
