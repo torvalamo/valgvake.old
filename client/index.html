@@ -273,7 +273,14 @@
                     <tr>
                         <td width="5%">#</td>
                         <td>Fylke</td>
-                        <td>Kommune</td>
+                        <td ng-click="setOrderTerm('name')" 
+                            ng-class="{'is-bold': orderBy == 'name'}">Kommune 
+                            <span class="icon" 
+                                  ng-show="orderBy == 'name'">
+                                <i class="fa" 
+                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
+                            </span>
+                        </td>
                         <td width="15%" class="is-right" 
                             ng-class="{'is-bold': orderBy == 'counts.votes'}" 
                             ng-click="setOrderTerm('counts.votes', true)">
