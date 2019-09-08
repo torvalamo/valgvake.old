@@ -68,6 +68,10 @@
             thead td {
                 cursor: ns-resize;
             }
+			
+			ol {
+				margin-left: 20px;
+			}
         </style>
     </head>
     <body ng-controller="ResultatCtr">
@@ -120,7 +124,7 @@
         </section>
 		<div class="container is-fluid">
 			<div class="columns">
-				<div class="column">
+				<div class="column is-half">
 					<!-- fylker -->
 					<h1 class="title has-text-centered">Fylkestingsvalg</h1>
 					<table class="table">
@@ -205,14 +209,21 @@
 					</table>
 					
 					<div>
-						Trykk på et fylke til venstre for å filtrere kommunelisten til høyre. Trykk på nytt for å fjerne filtreringen.
+						<h2 class="subtitle">Tips og triks</h2>
+						<ol>
+							<li>Trykk på et fylke til venstre for å filtrere kommunelisten til høyre. Trykk på nytt for å fjerne filtreringen.</li>
+							<li><em>Mandatrang</em> viser hvor nærme neste mandat er. Tallet viser det faktiske rangerte mandattallet for <em>vårt</em> neste mandat med gjeldende stemmegivning.</li>
+							<li>Appen oppdaterer seg selv. Det er ikke vits å spamme refresh. Får du rød feilmelding under, meld fra i tråden i internforumet.</li>
+						</ol>
 					</div>
 					
-					<div>
-						<em>Mandatrang</em> viser hvor nærme neste mandat er.
+					<div class="has-text-right" ng-switch on="fetch.status">
+						<span class="tag is-danger" ng-switch-when="-1">KATASTROFE (litt): {{ error }}</span>
+						<span class="tag is-warning" ng-switch-when="0">Sjekker om det er nye data ...</span>
+						<span class="tag is-success" ng-switch-default>Siste oppdatering {{ fetch.time | date : 'd. MMMM y kl. HH:mm' }}</span>
 					</div>
 				</div>
-				<div class="column">
+				<div class="column is-half">
 					<!-- kommuner -->
 					<h1 class="title has-text-centered">Kommunevalg</h1>
 					<table class="table">
@@ -297,11 +308,6 @@
 					</table>
 				</div>
 			</div>
-            <div class="has-text-right" ng-switch on="fetch.status">
-                <span class="tag is-danger" ng-switch-when="-1">KATASTROFE (litt): {{ error }}</span>
-                <span class="tag is-warning" ng-switch-when="0">Sjekker om det er nye data ...</span>
-                <span class="tag is-success" ng-switch-default>Siste registrering {{ fetch.time | date : 'd. MMMM y kl. HH:mm' }}</span>
-            </div>
         </div>
     </body>
 </html>
