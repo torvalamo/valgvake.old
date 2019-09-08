@@ -1,8 +1,8 @@
 const http = require('https');
 const vm = require('vm');
 
-const PARTIKODE = 'SP';
-const YEAR = '2015';
+const PARTIKODE = 'LIBS';
+const YEAR = '2019';
 
 const data = exports.data = {
     fy: {
