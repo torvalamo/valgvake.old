@@ -2,146 +2,253 @@ const http = require('https');
 const vm = require('vm');
 
 const PARTIKODE = 'LIBS';
+const YEAR = '2015';
 
 const data = exports.data = {
-    fetch: null,
-    total: {
-        counted: {
-            votes: 0,
-            earlyVotes: 0,
-            percentage: null
-        },
-        counts: {
-            votes: 0,
-            earlyVotes: 0,
-            percentage: null
-        }
-    },
-    counties: [
-        {code: '03', fetch: null},
-        {code: '11', fetch: null},
-        {code: '15', fetch: null},
-        {code: '18', fetch: null},
-        {code: '30', fetch: null},
-        {code: '34', fetch: null},
-        {code: '38', fetch: null},
-        {code: '42', fetch: null},
-        {code: '46', fetch: null},
-        {code: '50', fetch: null},
-        {code: '54', fetch: null}
-    ]
+    fy: {
+		fetch: null,
+		update: null,
+		all: {
+			votes: 0,
+			earlyVotes: 0,
+			percentage: null,
+			mandates: 0
+		},
+		our: {
+			votes: 0,
+			earlyVotes: 0,
+			percentage: null,
+			mandates: 0
+		},
+		counties: [
+			{code: '03'},
+			{code: '11'},
+			{code: '15'},
+			{code: '18'},
+			{code: '30'},
+			{code: '34'},
+			{code: '38'},
+			{code: '42'},
+			{code: '46'},
+			{code: '50'},
+			{code: '54'}
+		]
+	},
+    ko: {
+		fetch: null,
+		update: null,
+		all: {
+			votes: 0,
+			earlyVotes: 0,
+			counted: null,
+			mandates: 0
+		},
+		our: {
+			votes: 0,
+			earlyVotes: 0,
+			percentage: null,
+			mandates: 0
+		},
+		municipals: [
+			{code: '03'},
+			{code: '11'},
+			{code: '15'},
+			{code: '18'},
+			{code: '30'},
+			{code: '34'},
+			{code: '38'},
+			{code: '42'},
+			{code: '46'},
+			{code: '50'},
+			{code: '54'}
+		]
+	},
+	municipals: []
 };
-const municipal = exports.municipal = {};
 
 process.on('uncaughtException', (e) => {
     data.error = e.message;
 });
 
 exports.request = function getNational(repeat, delay) {
-    getPath('/api/2019/fy', (obj) => {
-        data.fetch = obj.tidspunkt.rapportGenerert;
+    getPath('/api/' + YEAR + '/fy', (obj) => {
+        data.fy.fetch = obj.tidspunkt.rapportGenerert;
+		data.fy.update = obj.tidspunkt.sisteStemmer;
         
-        data.total.counted.votes = obj.stemmer.total;
-        data.total.counted.earlyVotes = obj.stemmer.fhs;
-        data.total.counted.percentage = obj.opptalt.prosent;
-        data.total.counted.mandates = obj.mandater.antall;
+        data.fy.all.votes = obj.stemmer.total;
+        data.fy.all.earlyVotes = obj.stemmer.fhs;
+        data.fy.all.counted = obj.opptalt.prosent;
+        data.fy.all.mandates = obj.mandater.antall;
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
         }).pop();
         
-        data.total.counts.votes = p.stemmer.resultat.antall.total;
-        data.total.counts.earlyVotes = p.stemmer.resultat.antall.fhs;
-        data.total.counts.percentage = p.stemmer.resultat.prosent || 0;
-        data.total.counts.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
+        data.fy.our.votes = p.stemmer.resultat.antall.total;
+        data.fy.our.earlyVotes = p.stemmer.resultat.antall.fhs;
+        data.fy.our.percentage = p.stemmer.resultat.prosent || 0;
+        data.fy.our.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
         
-        // Own percentage calculation for more decimals
-        var votes = obj.partier.reduce((sum, p) => {
-            if (p.id.partikode == 'BLANKE') return sum;
-            return sum + p.stemmer.resultat.antall.total;
-        }, 0);
-        
-        data.total.counts.percentage = (p.stemmer.resultat.antall.total / votes) * 100;
-        
-        console.log('TOTAL', votes, p.stemmer.resultat.antall.total, data.total.counts.percentage);
-        
-        // Check counties for updates
-        data.counties.forEach((c, i) => {
-            var l = obj._links.related.filter((l) => {
-                return c.code == l.nr;
-            }).pop();
-            if (l.rapportGenerert != c.fetch) {
-                getCounty(c.code);
-            }
-        });
-        
+		// Grab all counties updates
+		obj._links.related.forEach( l => {
+			getCounty( l.nr );
+		});
+		
         repeat && setTimeout(() => getNational(repeat, delay), delay || 60000);
+    });
+	getNational2();
+}
+
+function getNational2() {
+	getPath('/api/' + YEAR + '/ko', obj => {
+        data.ko.fetch = obj.tidspunkt.rapportGenerert;
+		data.ko.update = obj.tidspunkt.sisteStemmer;
+        
+        data.ko.all.votes = obj.stemmer.total;
+        data.ko.all.earlyVotes = obj.stemmer.fhs;
+        data.ko.all.counted = obj.opptalt.prosent;
+        data.ko.all.mandates = obj.mandater.antall;
+        
+        var p = obj.partier.filter((p) => {
+            return p.id.partikode == PARTIKODE;
+        }).pop();
+        
+        data.ko.our.votes = p.stemmer.resultat.antall.total;
+        data.ko.our.earlyVotes = p.stemmer.resultat.antall.fhs;
+        data.ko.our.percentage = p.stemmer.resultat.prosent || 0;
+        data.ko.our.mandates = p.mandater ? ( p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall ) : 0;
+        
+		data.municipals = [];
+		
+		// Grab all municipalities updates
+		obj._links.related.forEach( l => {
+			let code = l.nr;
+			if ( l.nr == '03' ) l.nr = '03/0301';
+			getMunicipalCounty( code, l.nr );
+		});
     });
 }
 
 function getCounty(nr) {
-    getPath('/api/2019/fy/' + nr, (obj) => {
-        var c = data.counties.filter((c) => {
+    getPath('/api/' + YEAR + '/fy/' + nr, (obj) => {
+        var c = data.fy.counties.filter( c => {
             return c.code == obj.id.nr;
         }).pop();
         
         c.fetch = obj.tidspunkt.rapportGenerert;
+		c.update = obj.tidspunkt.sisteStemmer;
         
-        c.code = obj.id.nr;
         c.name = obj.id.navn;
         
-        c.counted = {};
-        c.counted.votes = obj.stemmer.total;
-        c.counted.earlyVotes = obj.stemmer.fhs;
-        c.counted.percentage = obj.opptalt.prosent;
-        c.counted.mandates = obj.mandater.antall;
+		c.all = {
+			votes: obj.stemmer.total,
+			earlyVotes: obj.stemmer.fhs,
+			counted: obj.opptalt.prosent,
+			mandates: obj.mandater.antall
+		};
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
         }).pop();
         
-        c.counts = {};
-        c.counts.votes = p.stemmer.resultat.antall.total;
-        c.counts.earlyVotes = p.stemmer.resultat.antall.fhs;
-        c.counts.percentage = p.stemmer.resultat.prosent || 0;
-        c.counts.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
+		c.our = {
+			votes: p.stemmer.resultat.antall.total,
+			earlyVotes: p.stemmer.resultat.antall.fhs,
+			percentage: p.stemmer.resultat.prosent || 0,
+			mandates: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.antall : 
+				 	p.mandater.prognose.antall ) : 0,
+			nextMandate: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.nesteMandat.mandatrang :
+				 	p.mandater.prognose.nesteMandat.mandatrang ) : '-'
+		};
+    });
+}
+
+function getMunicipalCounty(code, nr) {
+    getPath('/api/' + YEAR + '/ko/' + nr, (obj) => {
+        var c = data.ko.municipals.filter( c => {
+            return c.code == obj.id.nr;
+        }).pop();
         
-        // Own percentage calculation for more decimals
-        var votes = obj.partier.reduce((sum, p) => {
-            if (p.id.partikode == 'BLANKE') return sum;
-            return sum + p.stemmer.resultat.antall.total;
-        }, 0);
+        c.fetch = obj.tidspunkt.rapportGenerert;
+		c.update = obj.tidspunkt.sisteStemmer;
         
-        c.counts.percentage = (p.stemmer.resultat.antall.total / votes) * 100;
+        c.name = obj.id.navn;
         
+		c.all = {
+			votes: obj.stemmer.total,
+			earlyVotes: obj.stemmer.fhs,
+			counted: obj.opptalt.prosent,
+			mandates: obj.mandater.antall
+		};
+        
+        var p = obj.partier.filter((p) => {
+            return p.id.partikode == PARTIKODE;
+        }).pop();
+        
+		c.our = {
+			votes: p.stemmer.resultat.antall.total,
+			earlyVotes: p.stemmer.resultat.antall.fhs,
+			percentage: p.stemmer.resultat.prosent || 0,
+			mandates: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.antall : 
+				 	p.mandater.prognose.antall ) : 0,
+			nextMandate: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.nesteMandat.mandatrang :
+				 	p.mandater.prognose.nesteMandat.mandatrang ) : 0
+		};
+		
+		c.municipals = [];
+		
         obj._links.related.forEach((r) => {
-            getMunicipal(c.code, r.nr);
+			var m = { code: r.nr, county: c.code };
+			c.municipals.push( m );
+			data.municipals.push( m );
+            getMunicipal(c.code, r.nr );
         });
     });
 }
 
-function getMunicipal(county, nr) {
-    getPath('/api/2019/fy/' + county + '/' + nr, (obj) => {
+function getMunicipal(county, nr, c) {
+    getPath('/api/' + YEAR + '/ko/' + county + '/' + nr, (obj) => {
+		var m = data.municipals.filter( m => {
+			return m.code == nr;
+		}).pop();
+		
+		m.name = obj.id.navn;
+		
+		m.all = {
+			votes: obj.stemmer.total,
+			earlyVotes: obj.stemmer.fhs,
+			counted: obj.opptalt.prosent,
+			mandates: obj.mandater.antall
+		};
+		
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
-        }).pop();
-        
-        // Own percentage calculation for more decimals
-        var votes = obj.partier.reduce((sum, p) => {
-            if (p.id.partikode == 'BLANKE') return sum;
-            return sum + p.stemmer.resultat.antall.total;
-        }, 0);
-        
-        municipal[nr] = {
-            county: obj._links.up.navn,
-            code: obj.id.nr,
-            name: obj.id.navn,
-            counts: {
-                votes: p.stemmer.resultat.antall.total,
-                earlyVotes: p.stemmer.resultat.antall.fhs,
-                percentage: (p.stemmer.resultat.antall.total / votes) * 100
-            }
-        };
+        });
+		
+		if (p.length == 0) return;
+		p = p.pop();
+		
+		m.our = {
+			votes: p.stemmer.resultat.antall.total,
+			earlyVotes: p.stemmer.resultat.antall.fhs,
+			percentage: p.stemmer.resultat.prosent || 0,
+			mandates: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.antall : 
+				 	p.mandater.prognose.antall ) : 0,
+			nextMandate: p.mandater ? 
+				( p.mandater.resultat ? 
+				 	p.mandater.resultat.nesteMandat.mandatrang :
+				 	p.mandater.prognose.nesteMandat.mandatrang ) : 0
+		};
     });
 }
 

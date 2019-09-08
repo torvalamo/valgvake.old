@@ -4,9 +4,10 @@
 <!doctype html>
 <html ng-app="resApp">
     <head>
-        <title>Valgresultat 2017</title>
+        <title>Valgresultat 2019</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="refresh" content="600">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
@@ -77,245 +78,216 @@
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Forhåndstemmer</p>
-                                <p class="title">{{ total.counts.earlyVotes | number }}</p>
+                                <p class="title">{{ fy.our.earlyVotes | number }}</p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">
                             <div>
                                 <p class="heading">Alle stemmer</p>
-                                <p class="title is-1 is-bold">{{ total.counts.votes | number }}</p>
-                            </div>
-                        </div>
-                        <div class="level-item has-text-centered is-clickable" 
-                             ng-click="toggleContext()">
-                            <img src="logo.png" alt="" style="height: 100px;">
-                        </div>
-                        <div class="level-item has-text-centered"
-                             ng-click="showMunicipals = !showMunicipals">
-                            <div>
-                                <p class="heading">Oppslutning</p>
-                                <p class="title is-1 is-bold">{{ total.counts.percentage | number : 2 }} %</p>
+                                <p class="title is-1 is-bold">{{ fy.our.votes | number }}</p>
                             </div>
                         </div>
                         <div class="level-item has-text-centered">
                             <div>
-                                <p class="heading">Opptalt</p>
-                                <p class="title">{{ total.counted.percentage | number : 1 }} %</p>
+                                <p class="heading">Oppslutning</p>
+                                <p class="title is-1 is-bold">{{ fy.our.percentage | number : 2 }} %</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <img src="logo.png" alt="" style="height: 100px;">
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading">Forhåndstemmer</p>
+                                <p class="title">{{ ko.our.earlyVotes | number }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading">Alle stemmer</p>
+                                <p class="title is-1 is-bold">{{ ko.our.votes | number }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered">
+                            <div>
+                                <p class="heading">Oppslutning</p>
+                                <p class="title is-1 is-bold">{{ ko.our.percentage | number : 2 }} %</p>
                             </div>
                         </div>
                     </nav>
                 </div>
             </div>
         </section>
-        <div class="container is-fluid">
-            <table class="table is-striped" ng-hide="context || showMunicipals">
-                <thead>
-                    <tr>
-                        <td width="5%" 
-                            ng-click="setOrderTerm('code')" 
-                            ng-class="{'is-bold': orderBy == 'code'}"># 
-                            <span class="icon" 
-                                  ng-show="orderBy == 'code'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span>
-                        </td>
-                        <td ng-click="setOrderTerm('name')" 
-                            ng-class="{'is-bold': orderBy == 'name'}">Fylke 
-                            <span class="icon" 
-                                  ng-show="orderBy == 'name'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span>
-                        </td>
-                        <td width="10%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.votes'}" 
-                            ng-click="setOrderTerm('counts.votes', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.votes'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Stemmer
-                        </td>
-                        <td width="10%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.earlyVotes'}" 
-                            ng-click="setOrderTerm('counts.earlyVotes', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.earlyVotes'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Forh.stem.
-                        </td>
-                        <td width="10%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.percentage'}" 
-                            ng-click="setOrderTerm('counts.percentage', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.percentage'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Oppslutning
-                        </td>
-                        <td width="10%" class="is-right" 
-                            ng-class="{'is-bold': orderBy.length == 2}" 
-                            ng-click="setOrderTerm('counts.mandates', true, 'counted.mandates')">
-                            <span class="icon" 
-                                  ng-show="orderBy.length == 2">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Mandater
-                        </td>
-                        <td width="15%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counted.votes'}" 
-                            ng-click="setOrderTerm('counted.votes', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counted.votes'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Opptalt
-                        </td>
-                        <td width="20%" 
-                            ng-class="{'is-bold': orderBy == 'counted.percentage'}" 
-                            ng-click="setOrderTerm('counted.percentage', true)">Opptelling 
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counted.percentage'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="county in counties | orderBy : orderBy : orderReverse" 
-                        ng-class="{'is-selected': county.counts.mandates, 'is-one-pst': county.counts.votes >= 500}">
-                        <td>{{ county.code }}</td>
-                        <td>{{ county.name }}</td>
-                        <td class="is-right">{{ county.counts.votes | number}}</td>
-                        <td class="is-right">{{ county.counts.earlyVotes | number}}</td>
-                        <td class="is-right">{{ county.counts.percentage | number : 2 }} %</td>
-                        <td class="is-right">{{ county.counts.mandates }} / {{ county.counted.mandates }}</td>
-                        <td class="is-right">{{ county.counted.votes | number }}</td>
-                        <td>
-                            <progress class="progress" 
-                                      value="{{ county.counted.percentage }}" max="100" 
-                                      ng-class="{'is-primary': county.counts.percentage >= 1 && !county.counts.mandates, 'is-medium': !county.counts.mandates, 'is-large is-warning': county.counts.mandates}">
-                                {{ county.counted.percentage | number : 1 }} %
-                            </progress>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="tile is-ancestor" ng-show="context && !showMunicipals">
-                <div class="tile is-vertical is-12">
-                    <!-- selected top county -->
-                    <div class="tile is-parent">
-                        <div class="tile is-child notification is-primary" 
-                             ng-repeat="county in counties | filter : {code: getTopCounty()}" 
-                             ng-class="{'is-highlighted': county.counts.percentage >= 1, 'is-pinnable': !topCounty, 'is-pinned': topCounty}" 
-                             ng-click="setTopCounty(topCounty ? null : county.code)">
-                                <table>
-                                    <tr class="is-bold">
-                                        <td rowspan="2" width="30%" class="title is-1 is-center">{{ county.counts.votes | number }}</td>
-                                        <td class="title is-3 is-center">{{ county.name }}</td>
-                                        <td rowspan="2" width="30%" class="title is-1 is-center">{{ county.counts.percentage | number : 2 }} %</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <progress class="progress is-small is-context" 
-                                                      value="{{ county.counted.percentage }}" max="100" 
-                                                      ng-class="{'is-warning': county.counts.percentage >= 1}">
-                                                {{ county.counted.percentage | number : 1 }} %
-                                            </progress>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="title is-6 is-center">{{ county.counts.earlyVotes }} forhåndsstemmer</td>
-                                        <td class="title is-6 is-center">{{ county.counted.votes }} stemmer opptalt</td>
-                                        <td class="title is-6 is-center">{{ county.counts.mandates }} mandater av {{ county.counted.mandates }} mulige</td>
-                                    </tr>
-                                </table>
-                        </div>
-                    </div>
-                    <!-- the rest -->
-                    <div class="tile" ng-repeat="row in [0, 1, 2, 3, 4, 5]">
-                        <div class="tile is-parent is-4" 
-                             ng-repeat="county in counties | filter : {code: '!' + getTopCounty()} | orderBy : ['-votes', 'name'] | limitTo : 3 : (3 * row)">
-                            <div class="tile is-child notification is-primary is-pinnable" 
-                                 ng-class="{'is-highlighted': county.percentage >= 1}"
-                                 ng-click="setTopCounty(county.code)">
-                                <table>
-                                    <tr class="is-bold">
-                                        <td rowspan="2" width="30%" class="title is-2 is-center">{{ county.counts.votes | number }}</td>
-                                        <td class="title is-4 is-center">{{ county.name }}</td>
-                                        <td rowspan="2" width="30%" class="title is-2 is-center">{{ county.counts.percentage | number : 2 }} %</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <progress class="progress is-small is-context" 
-                                                      value="{{ county.counted.percentage }}" max="100" 
-                                                      ng-class="{'is-warning': county.percentage >= 1}">
-                                                {{ county.counted.percentage | number : 1 }} %
-                                            </progress>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <table class="table is-striped" ng-show="showMunicipals">
-                <thead>
-                    <tr>
-                        <td width="5%">#</td>
-                        <td>Fylke</td>
-                        <td ng-click="setOrderTerm('name')" 
-                            ng-class="{'is-bold': orderBy == 'name'}">Kommune 
-                            <span class="icon" 
-                                  ng-show="orderBy == 'name'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span>
-                        </td>
-                        <td width="15%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.votes'}" 
-                            ng-click="setOrderTerm('counts.votes', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.votes'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Stemmer
-                        </td>
-                        <td width="15%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.earlyVotes'}" 
-                            ng-click="setOrderTerm('counts.earlyVotes', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.earlyVotes'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Forh.stem.
-                        </td>
-                        <td width="15%" class="is-right" 
-                            ng-class="{'is-bold': orderBy == 'counts.percentage'}" 
-                            ng-click="setOrderTerm('counts.percentage', true)">
-                            <span class="icon" 
-                                  ng-show="orderBy == 'counts.percentage'">
-                                <i class="fa" 
-                                   ng-class="{'fa-sort-asc': !orderReverse, 'fa-sort-desc': orderReverse}"></i>
-                            </span> Oppslutning
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="muni in municipal | orderBy : orderBy : orderReverse">
-                        <td>{{ muni.code }}</td>
-                        <td>{{ muni.county }}</td>
-                        <td>{{ muni.name }}</td>
-                        <td class="is-right">{{ muni.counts.votes | number}}</td>
-                        <td class="is-right">{{ muni.counts.earlyVotes | number}}</td>
-                        <td class="is-right">{{ muni.counts.percentage | number : 2 }} %</td>
-                    </tr>
-                </tbody>
-            </table>
+		<div class="container is-fluid">
+			<div class="columns">
+				<div class="column">
+					<!-- fylker -->
+					<h1 class="title has-text-centered">Fylkestingsvalg</h1>
+					<table class="table is-striped">
+						<thead>
+							<tr>
+								<td ng-click="setFyOrderTerm('code', true)" 
+									ng-class="{'is-bold': fyOrderBy == 'code'}"># 
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'code'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span>
+								</td>
+								<td ng-click="setFyOrderTerm('name', true)" 
+									ng-class="{'is-bold': fyOrderBy == 'name'}">Fylke 
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'name'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span>
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': fyOrderBy == 'our.votes'}" 
+									ng-click="setFyOrderTerm('our.votes', true)">
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'our.votes'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span> Stemmer
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': fyOrderBy == 'our.percentage'}" 
+									ng-click="setFyOrderTerm('our.percentage', true)">
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'our.percentage'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span> Oppslutning
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': fyOrderBy == 'our.mandates'}" 
+									ng-click="setFyOrderTerm('our.mandates', true)">
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'our.mandates'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span> Mandater
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': fyOrderBy == 'our.nextMandate'}" 
+									ng-click="setFyOrderTerm('our.nextMandate', true)">
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'our.nextMandate'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span> Mandatrang
+								</td>
+								<td class="is-right"
+									ng-class="{'is-bold': fyOrderBy == 'all.percentage'}" 
+									ng-click="setFyOrderTerm('all.percentage', true)">
+									<span class="icon" 
+										  ng-show="fyOrderBy == 'all.percentage'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !fyOrderReverse, 'fa-sort-desc': fyOrderReverse}"></i>
+									</span> Opptalt 
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="county in fy.counties | orderBy : fyOrderBy : fyOrderReverse" 
+								ng-class="{'is-selected': activeCounty == county.code, 'is-one-pst': county.our.mandates }"
+								ng-click="setActiveCounty(county.code)">
+								<td>{{ county.code }}</td>
+								<td>{{ county.name }}</td>
+								<td class="is-right">{{ county.our.votes | number}}</td>
+								<td class="is-right">{{ county.our.percentage | number : 2 }} %</td>
+								<td class="is-right">{{ county.our.mandates }} / {{ county.all.mandates }}</td>
+								<td class="is-right">{{ county.our.nextMandate }}</td>
+								<td class="is-right">{{ county.all.percentage | number : 1 }} %</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="column">
+					<!-- kommuner -->
+					<h1 class="title has-text-centered">Kommunevalg</h1>
+					<table class="table is-striped">
+						<thead>
+							<tr>
+								<td ng-click="setKoOrderTerm('code', true)" 
+									ng-class="{'is-bold': koOrderBy == 'code'}"># 
+									<span class="icon" 
+										  ng-show="koOrderBy == 'code'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span>
+								</td>
+								<td ng-click="setKoOrderTerm('name', true)" 
+									ng-class="{'is-bold': koOrderBy == 'name'}">Kommune 
+									<span class="icon" 
+										  ng-show="koOrderBy == 'name'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span>
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': koOrderBy == 'our.votes'}" 
+									ng-click="setKoOrderTerm('our.votes', true)">
+									<span class="icon" 
+										  ng-show="koOrderBy == 'our.votes'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span> Stemmer
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': koOrderBy == 'our.percentage'}" 
+									ng-click="setKoOrderTerm('our.percentage', true)">
+									<span class="icon" 
+										  ng-show="koOrderBy == 'our.percentage'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span> Oppslutning
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': koOrderBy == 'our.mandates'}" 
+									ng-click="setKoOrderTerm('our.mandates', true)">
+									<span class="icon" 
+										  ng-show="koOrderBy == 'our.mandates'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span> Mandater
+								</td>
+								<td class="is-right" 
+									ng-class="{'is-bold': koOrderBy == 'our.nextMandate'}" 
+									ng-click="setKoOrderTerm('our.nextMandate', true)">
+									<span class="icon" 
+										  ng-show="koOrderBy == 'our.nextMandate'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span> Mandatrang
+								</td>
+								<td class="is-right"
+									ng-class="{'is-bold': koOrderBy == 'all.percentage'}" 
+									ng-click="setKoOrderTerm('all.percentage', true)">
+									<span class="icon" 
+										  ng-show="koOrderBy == 'all.percentage'">
+										<i class="fa" 
+										   ng-class="{'fa-sort-asc': !koOrderReverse, 'fa-sort-desc': koOrderReverse}"></i>
+									</span> Opptalt 
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="muni in municipals | orderBy : koOrderBy : koOrderReverse | filter : filterMuni : true" 
+								ng-class="{'is-one-pst': county.our.mandates}">
+								<td>{{ muni.code }}</td>
+								<td>{{ muni.name }}</td>
+								<td class="is-right">{{ muni.our.votes | number}}</td>
+								<td class="is-right">{{ muni.our.percentage | number : 2 }} %</td>
+								<td class="is-right">{{ muni.our.mandates }} / {{ muni.all.mandates }}</td>
+								<td class="is-right">{{ muni.our.nextMandate }}</td>
+								<td class="is-right">{{ muni.all.percentage | number : 1 }} %</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
             <div class="has-text-right" ng-switch on="fetch.status">
                 <span class="tag is-danger" ng-switch-when="-1">KATASTROFE (litt): {{ error }}</span>
                 <span class="tag is-warning" ng-switch-when="0">Sjekker om det er nye data ...</span>
