@@ -232,7 +232,7 @@ function getMunicipal(county, nr) {
 			nextMandate: p.mandater ? 
 				( p.mandater.resultat ? 
 				 	p.mandater.resultat.nesteMandat.mandatrang :
-				 	p.mandater.prognose.nesteMandat.mandatrang ) : 0
+				 	p.mandater.prognose.nesteMandat.mandatrang ) : '-'
 		};
     });
 }
