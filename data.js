@@ -166,5 +166,8 @@ function getPath(path, cb) {
                 console.log(e);
             }
         });
+        msg.on('close', () => {
+            repeat && setTimeout(() => request(repeat, delay), delay || 60000);
+        });
     }).end();
 }
