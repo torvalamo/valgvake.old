@@ -18,25 +18,17 @@ const data = exports.data = {
         }
     },
     counties: [
-        {code: '01', fetch: null},
-        {code: '02', fetch: null},
         {code: '03', fetch: null},
-        {code: '04', fetch: null},
-        {code: '05', fetch: null},
-        {code: '06', fetch: null},
-        {code: '07', fetch: null},
-        {code: '08', fetch: null},
-        {code: '09', fetch: null},
-        {code: '10', fetch: null},
         {code: '11', fetch: null},
-        {code: '12', fetch: null},
-        {code: '14', fetch: null},
         {code: '15', fetch: null},
-        {code: '16', fetch: null},
-        {code: '17', fetch: null},
         {code: '18', fetch: null},
-        {code: '19', fetch: null},
-        {code: '20', fetch: null},
+        {code: '30', fetch: null},
+        {code: '34', fetch: null},
+        {code: '38', fetch: null},
+        {code: '42', fetch: null},
+        {code: '46', fetch: null},
+        {code: '50', fetch: null},
+        {code: '54', fetch: null}
     ]
 };
 const municipal = exports.municipal = {};
@@ -46,7 +38,7 @@ process.on('uncaughtException', (e) => {
 });
 
 exports.request = function getNational(repeat, delay) {
-    getPath('/api/2017/st', (obj) => {
+    getPath('/api/2019/fy', (obj) => {
         data.fetch = obj.tidspunkt.rapportGenerert;
         
         data.total.counted.votes = obj.stemmer.total;
