@@ -5,6 +5,7 @@ angular
         $scope.fetch = {};
         $scope.fy = [];
         $scope.ko = [];
+		$scope.municipals = [];
         function fetch() {
             $scope.fetch.status = 0;
             console.log('Henter data..')
@@ -13,6 +14,7 @@ angular
                 .then(function(res) {
                     $scope.fy = res.data.fy;
 					$scope.ko = res.data.ko;
+					$scope.municipals = res.data.municipals;
                     var d = new Date();
                     d.setTime(Date.parse(res.data.fy.fetch));
                     $scope.fetch = {

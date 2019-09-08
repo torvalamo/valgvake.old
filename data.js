@@ -199,7 +199,7 @@ function getMunicipalCounty(code) {
     });
 }
 
-function getMunicipal(county, nr, c) {
+function getMunicipal(county, nr) {
     getPath('/api/' + YEAR + '/ko/' + county + '/' + nr, (obj) => {
 		var m = data.municipals.filter( m => {
 			return m.code == nr;
@@ -252,6 +252,7 @@ function getPath(path, cb) {
         });
         msg.on('end', () => {
             try {
+				//console.log('got...', path);
                 cb(JSON.parse(raw));
             } catch(e) {
                 data.error = e.message;
