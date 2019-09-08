@@ -36,6 +36,7 @@ angular
 				$scope.activeCounty == null;
 				cookie('activeCounty', null);
 				$scope.filterMuni = {};
+				console.log("unset active county:", $scope.activeCounty);
 			} else {
 				$scope.activeCounty = code;
 				cookie('activeCounty', code);
