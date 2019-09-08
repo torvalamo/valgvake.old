@@ -42,9 +42,9 @@ const data = exports.data = {
 	municipals: []
 };
 
-process.on('uncaughtException', (e) => {
+/*process.on('uncaughtException', (e) => {
     data.error = e.message;
-});
+});*/
 
 exports.request = function getNational(repeat, delay) {
     getPath('/api/' + YEAR + '/fy', (obj) => {
@@ -238,6 +238,7 @@ function getMunicipal(county, nr, c) {
 }
 
 function getPath(path, cb) {
+	console.log('Looking up... ', path);
     http.request({
         protocol: 'https:',
         hostname: 'valgresultat.no',
@@ -252,6 +253,7 @@ function getPath(path, cb) {
         });
         msg.on('end', () => {
             try {
+				console.log('success for', path);
                 cb(JSON.parse(raw));
             } catch(e) {
                 data.error = e.message;
