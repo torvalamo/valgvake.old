@@ -80,7 +80,7 @@ exports.request = function getNational(repeat, delay) {
 }
 
 function getCounty(nr) {
-    getPath('/api/2017/st/' + nr, (obj) => {
+    getPath('/api/2019/fy/' + nr, (obj) => {
         var c = data.counties.filter((c) => {
             return c.code == obj.id.nr;
         }).pop();
@@ -121,7 +121,7 @@ function getCounty(nr) {
 }
 
 function getMunicipal(county, nr) {
-    getPath('/api/2017/st/' + county + '/' + nr, (obj) => {
+    getPath('/api/2019/fy/' + county + '/' + nr, (obj) => {
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
         }).pop();
