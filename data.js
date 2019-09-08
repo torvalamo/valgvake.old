@@ -58,7 +58,10 @@ exports.request = function getNational(repeat, delay) {
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
-        }).pop();
+        });
+		
+		if (p.length == 0) return;
+		p = p.pop();
         
         data.fy.our.votes = p.stemmer.resultat.antall.total;
         data.fy.our.earlyVotes = p.stemmer.resultat.antall.fhs;
@@ -88,7 +91,10 @@ function getNational2() {
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
-        }).pop();
+        });
+		
+		if (p.length == 0) return;
+		p = p.pop();
         
         data.ko.our.votes = p.stemmer.resultat.antall.total;
         data.ko.our.earlyVotes = p.stemmer.resultat.antall.fhs;
@@ -127,7 +133,10 @@ function getCounty(nr) {
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
-        }).pop();
+        });
+		
+		if (p.length == 0) return;
+		p = p.pop();
         
 		c.our = {
 			votes: p.stemmer.resultat.antall.total,
@@ -165,7 +174,10 @@ function getMunicipalCounty(code, nr) {
         
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
-        }).pop();
+        });
+		
+		if (p.length == 0) return;
+		p = p.pop();
         
 		c.our = {
 			votes: p.stemmer.resultat.antall.total,
@@ -175,10 +187,6 @@ function getMunicipalCounty(code, nr) {
 				( p.mandater.resultat ? 
 				 	p.mandater.resultat.antall : 
 				 	p.mandater.prognose.antall ) : 0,
-			nextMandate: p.mandater ? 
-				( p.mandater.resultat ? 
-				 	p.mandater.resultat.nesteMandat.mandatrang :
-				 	p.mandater.prognose.nesteMandat.mandatrang ) : 0
 		};
 		
 		c.municipals = [];
