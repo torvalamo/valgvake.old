@@ -68,6 +68,8 @@ exports.request = function getNational(repeat, delay) {
         data.fy.our.percentage = p.stemmer.resultat.prosent || 0;
         data.fy.our.mandates = p.mandater ? (p.mandater.resultat ? p.mandater.resultat.antall : p.mandater.prognose.antall) : 0;
         
+		data.fy.counties = [];
+		
 		// Grab all counties updates
 		obj._links.related.forEach( l => {
 			data.fy.counties.push( { code: l.nr } );
@@ -105,10 +107,8 @@ function getNational2() {
 		
 		// Grab all municipalities updates
 		obj._links.related.forEach( l => {
-			let code = l.nr;
-			if ( l.nr == '03' ) l.nr = '03/0301';
-			data.ko.municipals.push( { code: code } );
-			getMunicipalCounty( code, l.nr );
+			data.ko.municipals.push( { code: l.nr } );
+			getMunicipalCounty( l.nr );
 		});
     });
 }
@@ -154,7 +154,7 @@ function getCounty(nr) {
     });
 }
 
-function getMunicipalCounty(code, nr) {
+function getMunicipalCounty(code) {
     getPath('/api/' + YEAR + '/ko/' + nr, (obj) => {
         var c = data.ko.municipals.filter( c => {
             return c.code == obj.id.nr;
