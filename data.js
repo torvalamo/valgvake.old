@@ -155,7 +155,7 @@ function getCounty(nr) {
 }
 
 function getMunicipalCounty(code) {
-    getPath('/api/' + YEAR + '/ko/' + nr, (obj) => {
+    getPath('/api/' + YEAR + '/ko/' + code, (obj) => {
         var c = data.ko.municipals.filter( c => {
             return c.code == obj.id.nr;
         }).pop();
