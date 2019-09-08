@@ -16,7 +16,7 @@ angular
 					$scope.ko = res.data.ko;
 					$scope.municipals = res.data.municipals;
                     var d = new Date();
-                    d.setTime(Date.parse(res.data.fy.fetch));
+                    d.setTime(Date.parse(res.data.fy.update || res.data.fy.fetch));
                     $scope.fetch = {
                         time: d,
                         status: 1

@@ -276,7 +276,7 @@
 						<tbody>
 							<tr ng-repeat="muni in municipals | orderBy : koOrderBy : koOrderReverse" 
 								ng-class="{'is-one-pst': county.our.mandates}"
-								ng-hide="activeCounty != null && activeCounty != muni.county">
+								ng-hide="(activeCounty != null && activeCounty != muni.county) || !muni.our">
 								<td>{{ muni.code }}</td>
 								<td>{{ muni.name }}</td>
 								<td class="is-right">{{ muni.our.votes | number}}</td>
