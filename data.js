@@ -20,19 +20,7 @@ const data = exports.data = {
 			percentage: null,
 			mandates: 0
 		},
-		counties: [
-			{code: '03'},
-			{code: '11'},
-			{code: '15'},
-			{code: '18'},
-			{code: '30'},
-			{code: '34'},
-			{code: '38'},
-			{code: '42'},
-			{code: '46'},
-			{code: '50'},
-			{code: '54'}
-		]
+		counties: []
 	},
     ko: {
 		fetch: null,
@@ -49,19 +37,7 @@ const data = exports.data = {
 			percentage: null,
 			mandates: 0
 		},
-		municipals: [
-			{code: '03'},
-			{code: '11'},
-			{code: '15'},
-			{code: '18'},
-			{code: '30'},
-			{code: '34'},
-			{code: '38'},
-			{code: '42'},
-			{code: '46'},
-			{code: '50'},
-			{code: '54'}
-		]
+		municipals: []
 	},
 	municipals: []
 };
@@ -91,6 +67,7 @@ exports.request = function getNational(repeat, delay) {
         
 		// Grab all counties updates
 		obj._links.related.forEach( l => {
+			data.fy.counties.push( { code: l.nr } );
 			getCounty( l.nr );
 		});
 		
@@ -124,6 +101,7 @@ function getNational2() {
 		obj._links.related.forEach( l => {
 			let code = l.nr;
 			if ( l.nr == '03' ) l.nr = '03/0301';
+			data.ko.municipals.push( { code: code } );
 			getMunicipalCounty( code, l.nr );
 		});
     });
@@ -206,9 +184,8 @@ function getMunicipalCounty(code, nr) {
 		c.municipals = [];
 		
         obj._links.related.forEach((r) => {
-			var m = { code: r.nr, county: c.code };
-			c.municipals.push( m );
-			data.municipals.push( m );
+			c.municipals.push( r.nr );
+			data.municipals.push( { code: r.nr, county: c.code } );
             getMunicipal(c.code, r.nr );
         });
     });
