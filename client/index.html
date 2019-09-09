@@ -25,7 +25,10 @@
             td.is-left {
                 text-align: left;
             }
-            tr.is-one-pst:not(.is-selected) td {
+			tr.is-filter td {
+				background-color: yellow;
+			}
+            tr.has-mandates td {
                 font-weight: bold;
                 /*background-color: rgba(74, 16, 74, 1);*/
                 color: #4a164a;
@@ -35,7 +38,6 @@
                 font-weight: bold;
                 font-size: 120%;
                 color: yellow !important;
-                text-transform: uppercase;
             }
             .is-bold, .is-bold * {
                 font-weight: bold;
@@ -195,7 +197,7 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="county in fy.counties | orderBy : fyOrderBy : fyOrderReverse" 
-								ng-class="{'is-selected': activeCounty == county.code, 'is-one-pst': county.our.mandates }"
+								ng-class="{'is-selected': activeCounty == county.code, 'has-mandates': county.our.mandates }"
 								ng-click="setActiveCounty(county.code)">
 								<td>{{ county.code }}</td>
 								<td>{{ county.name }}</td>
@@ -295,7 +297,7 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="muni in municipals | orderBy : koOrderBy : koOrderReverse" 
-								ng-class="{'is-one-pst': muni.our.mandates}"
+								ng-class="{'has-mandates': muni.our.mandates}"
 								ng-hide="(activeCounty != null && activeCounty != muni.county) || !muni.our">
 								<td>{{ muni.code }}</td>
 								<td>{{ muni.name }}</td>
