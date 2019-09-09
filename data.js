@@ -53,7 +53,7 @@ exports.request = function getNational(repeat, delay) {
         
         data.fy.all.votes = obj.stemmer.total;
         data.fy.all.earlyVotes = obj.stemmer.fhs;
-        data.fy.all.counted = obj.opptalt.prosent;
+        data.fy.all.counted = obj.opptalt.forelopig;
         data.fy.all.mandates = obj.mandater.antall;
         
         var p = obj.partier.filter((p) => {
