@@ -25,15 +25,21 @@
             td.is-left {
                 text-align: left;
             }
-			tr.is-filter td {
-				background-color: yellow;
-			}
             tr.has-mandates td {
                 font-weight: bold;
                 /*background-color: rgba(74, 16, 74, 1);*/
-                color: #4a164a;
+                background-color: #4a164a;
+                color: white !important;
                 text-transform: uppercase;
             }
+			tr.is-filter td {
+                /*background-color: rgba(74, 16, 74, 1);*/
+				color: yellow !important;
+			}
+			tr.is-filter:not(.has-mandates) td {
+				background-color: yellow;
+				color: black !important;
+			}
             tr.is-selected td {
                 font-weight: bold;
                 font-size: 120%;
