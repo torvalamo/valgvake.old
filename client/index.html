@@ -197,7 +197,7 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="county in fy.counties | orderBy : fyOrderBy : fyOrderReverse" 
-								ng-class="{'is-selected': activeCounty == county.code, 'has-mandates': county.our.mandates }"
+								ng-class="{'is-filter': activeCounty == county.code, 'has-mandates': county.our.mandates }"
 								ng-click="setActiveCounty(county.code)">
 								<td>{{ county.code }}</td>
 								<td>{{ county.name }}</td>
