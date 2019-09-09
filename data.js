@@ -88,7 +88,7 @@ function getNational2() {
         
         data.ko.all.votes = obj.stemmer.total;
         data.ko.all.earlyVotes = obj.stemmer.fhs;
-        data.ko.all.counted = obj.opptalt.prosent;
+        data.ko.all.counted = obj.opptalt.forelopig;
         data.ko.all.mandates = obj.mandater.antall;
         
         var p = obj.partier.filter((p) => {
@@ -127,7 +127,7 @@ function getCounty(nr) {
 		c.all = {
 			votes: obj.stemmer.total,
 			earlyVotes: obj.stemmer.fhs,
-			counted: obj.opptalt.prosent,
+			counted: obj.opptalt.forelopig,
 			mandates: obj.mandater.antall
 		};
         
@@ -168,7 +168,7 @@ function getMunicipalCounty(code) {
 		c.all = {
 			votes: obj.stemmer.total,
 			earlyVotes: obj.stemmer.fhs,
-			counted: obj.opptalt.prosent,
+			counted: obj.opptalt.forelopig,
 			mandates: obj.mandater.antall
 		};
         
@@ -210,7 +210,7 @@ function getMunicipal(county, nr) {
 		m.all = {
 			votes: obj.stemmer.total,
 			earlyVotes: obj.stemmer.fhs,
-			counted: obj.opptalt.prosent,
+			counted: obj.opptalt.forelopig,
 			mandates: obj.mandater.antall
 		};
 		
