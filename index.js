@@ -6,7 +6,7 @@ app.use(express.static('client'));
 
 const data = require('./data.js');
 
-data.request(true, 60000);
+data.request(true, 3600000);
 
 app.get('/data.json', (req, res) => {
     res.json(data.data);
