@@ -46,7 +46,7 @@ process.on('uncaughtException', (e) => {
 });
 
 exports.request = function getNational(repeat, delay) {
-    getPath('/api/2017/st', (obj) => {
+    getPath('/api/2021/st', (obj) => {
         data.fetch = obj.tidspunkt.rapportGenerert;
         
         data.total.counted.votes = obj.stemmer.total;
@@ -88,7 +88,7 @@ exports.request = function getNational(repeat, delay) {
 }
 
 function getCounty(nr) {
-    getPath('/api/2017/st/' + nr, (obj) => {
+    getPath('/api/2021/st/' + nr, (obj) => {
         var c = data.counties.filter((c) => {
             return c.code == obj.id.nr;
         }).pop();
@@ -129,7 +129,7 @@ function getCounty(nr) {
 }
 
 function getMunicipal(county, nr) {
-    getPath('/api/2017/st/' + county + '/' + nr, (obj) => {
+    getPath('/api/2021/st/' + county + '/' + nr, (obj) => {
         var p = obj.partier.filter((p) => {
             return p.id.partikode == PARTIKODE;
         }).pop();
